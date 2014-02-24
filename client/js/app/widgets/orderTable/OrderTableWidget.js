@@ -28,6 +28,31 @@ define(
             },
 
             initialize : function(){
+                Handlebars.registerHelper("formatDate", function(timestamp) {
+                    var dateFormat = new Date(timestamp),
+                        minutes = dateFormat.getMinutes() + 1 + '',
+                        hours = dateFormat.getHours() + 1 + '',
+                        offset = dateFormat.getHours() > 11 ? 'PM' : 'AM';
+
+                    if (minutes.length < 2) {
+                        minutes = '0' + minutes;
+                    }
+
+                    if (hours.length < 2) {
+                        hours = '0' + hours;
+                    }
+
+                    dateFormat = [(dateFormat.getMonth() + 1), '/', dateFormat.getDate(), '/', dateFormat.getFullYear(), ' ', hours, ':', minutes, ':', (dateFormat.getSeconds() + 1), ' ', offset].join('');
+
+                    return dateFormat;
+                });
+
+                Handlebars.registerHelper('formatCurrency', function(value) {
+                    value = value.search('.') !== -1 ? value + '.00' : value;
+
+                    return value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                });
+
                 this.listenTo(MessageBus, 'orderCreatedEvent', function(){
                     this.collection.fetch().done(this.render.bind(this));
                 });
@@ -74,10 +99,6 @@ define(
             },
 
             makeTrade : function() {
-//                var loggedInUserId = this.userSelectorElement.val();
-//                Repository.setloggedInUser(loggedInUserId);
-
-//                Backbone.history.navigate('order-table', true);
                 this.addChild({
                         id: 'TradeModalWidget',
                         viewClass: TradeModalWidget,

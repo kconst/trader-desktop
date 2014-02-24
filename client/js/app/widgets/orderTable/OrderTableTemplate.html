@@ -5,8 +5,8 @@
 </nav>
 
 <aside>
-    <a class="button image-button" href="#calc">Calculator</a>
-    <a class="button image-button" href="#graph">Graph</a>
+    <a class="button image-button graph">Graph</a>
+    <a class="button image-button table">Calculator</a>
 </aside>
 
 <table>
@@ -29,13 +29,13 @@
         {{#each orders}}
         <tr>
             <td>{{id}}</td>
-            <td>{{creationTime}}</td>
+            <td>{{formatDate creationTime}}</td>
             <td>{{side}}</td>
             <td>{{symbol}}</td>
             <td>{{quantity}}</td>
             <td>{{quantityPlaced}}</td>
             <td>{{quantityExecuted}}</td>
-            <td>{{limitPrice}}</td>
+            <td>${{formatCurrency limitPrice}}</td>
             <td>{{priority}}</td>
             <td>{{status}}</td>
             <td>{{traderId}}</td>
